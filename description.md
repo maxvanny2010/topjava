@@ -29,7 +29,7 @@ Hibernate, делаем конверторы для типов LocalDateTime (Ja
 -  Обзор Spring Framework. Spring Context.
 -  Тестирование через JUnit.
 -  <a href="https://drive.google.com/file/d/0B9Ye2auQ_NsFai1veG9qaFZlZ2s/view">Spring Test</a>
--  Базы данных. PostgreSQL. Обзор NoSQL и Java persistence solution без ORM.
+-  Базы данных. PostgresSQL. Обзор NoSQL и Java persistence solution без ORM.
 -  Настройка Database в IDEA.
 -  Скрипты инициализации базы. Spring Jdbc Template.
 -  <a href="https://drive.google.com/file/d/0B9Ye2auQ_NsFU0Z2R190eDllYmM/view">Spring: инициализация и популирование DB</a>
@@ -64,7 +64,7 @@ Hibernate, делаем конверторы для типов LocalDateTime (Ja
 - [Кастомизация JSON (@JsonView) и валидации (groups)](https://drive.google.com/open?id=0B9Ye2auQ_NsFRTFsTjVHR2dXczA)
 -  Encoding password
 -  <a href="https://drive.google.com/file/d/0B9Ye2auQ_NsFNDlPZGdUNThzNUU/view">CSRF (добавление в проект защиты от межсайтовой подделки запроса)</a>
--  form-login. Spring Security Taglib
+-  form-login. Spring Security Taglib.
 -  Handler interceptor
 -  Spring Exception Handling
 -  Смена локали

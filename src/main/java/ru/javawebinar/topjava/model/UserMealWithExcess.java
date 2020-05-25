@@ -1,30 +1,73 @@
 package ru.javawebinar.topjava.model;
 
-import java.time.LocalDateTime;
+import java.util.Objects;
+import java.util.SortedMap;
+import java.util.StringJoiner;
 
+/**
+ * UserMealWithExcess.
+ *
+ * @author Maxim Vanny
+ * @version 5.0
+ * @since 5/24/2020
+ */
 public class UserMealWithExcess {
-    private final LocalDateTime dateTime;
+    /**
+     * field a meals by a day.
+     */
+    private final SortedMap<?, ?> meals;
+    /**
+     * field a excess.
+     */
+    private boolean excess;
 
-    private final String description;
-
-    private final int calories;
-
-    private final boolean excess;
-
-    public UserMealWithExcess(LocalDateTime dateTime, String description, int calories, boolean excess) {
-        this.dateTime = dateTime;
-        this.description = description;
-        this.calories = calories;
-        this.excess = excess;
+    /**
+     * /**
+     * Constructor.
+     *
+     * @param aExcess a excess
+     * @param aMeals  a meals
+     */
+    public UserMealWithExcess(final boolean aExcess,
+                              final SortedMap<?, ?> aMeals) {
+        this.excess = aExcess;
+        this.meals = aMeals;
     }
 
     @Override
-    public String toString() {
-        return "UserMealWithExcess{" +
-                "dateTime=" + dateTime +
-                ", description='" + description + '\'' +
-                ", calories=" + calories +
-                ", excess=" + excess +
-                '}';
+    public final String toString() {
+        return new StringJoiner(", ",
+                UserMealWithExcess.class.getSimpleName()
+                        + "[\n", "]\n")
+                .add("excess=" + this.excess + "\n")
+                .add("meals=" + this.meals)
+                .toString();
+    }
+
+    @Override
+    public final boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof UserMealWithExcess)) {
+            return false;
+        }
+        final UserMealWithExcess excess1 = (UserMealWithExcess) o;
+        return this.excess == excess1.excess
+                && this.meals.equals(excess1.meals);
+    }
+
+    @Override
+    public final int hashCode() {
+        return Objects.hash(this.meals, this.excess);
+    }
+
+    /**
+     * Method to set.
+     *
+     * @param aExcess a excess
+     **/
+    public final void setExcess(final boolean aExcess) {
+        this.excess = aExcess;
     }
 }
