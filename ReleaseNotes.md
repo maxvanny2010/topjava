@@ -71,7 +71,7 @@
 - Сделал проверку startTime/endTime на фильтре времени (после обновления datetimepicker до 2.5.20)
 
 ### Topjava 13
-- [Миграция на Botstrap 4](https://getbootstrap.com/docs/4.1/migration/)
+- [Миграция на Bootstrap 4](https://getbootstrap.com/docs/4.1/migration/)
 - Добавил [Responsive behaviors](https://getbootstrap.com/docs/4.1/components/navbar/#responsive-behaviors) - при уменшении ширины экрана навигация сворачивается в кнопку
 - Для отображения цвета еды и выключенного юзера использую [data-* атрибуты](https://developer.mozilla.org/ru/docs/Web/Guide/HTML/Using_data_attributes)
 - В `inputField.tag` передаю как параметр код для локализации label, а в `i18n.jsp` передаю как параметр `page`. См. [JSP include action with parameter example](https://beginnersbook.com/2013/12/jsp-include-with-parameter-example)

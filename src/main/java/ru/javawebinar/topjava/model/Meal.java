@@ -4,36 +4,54 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+import static ru.javawebinar.topjava.util.MealUtil.getCounter;
+
 public class Meal {
-    private final LocalDateTime dateTime;
+    private final int id;
+    private LocalDateTime dateTime;
+    private String description;
+    private int calories;
 
-    private final String description;
-
-    private final int calories;
-
-    public Meal(LocalDateTime dateTime, String description, int calories) {
-        this.dateTime = dateTime;
-        this.description = description;
-        this.calories = calories;
+    public Meal(LocalDateTime aDateTime, String aDescription, int aCalories) {
+        this.id = getCounter();
+        this.dateTime = aDateTime;
+        this.description = aDescription;
+        this.calories = aCalories;
     }
 
-    public LocalDateTime getDateTime() {
-        return dateTime;
+    public final int getId() {
+        return this.id;
     }
 
-    public String getDescription() {
-        return description;
+    public final LocalDateTime getDateTime() {
+        return this.dateTime;
     }
 
-    public int getCalories() {
-        return calories;
+    public final void setDateTime(final LocalDateTime aDateTime) {
+        this.dateTime = aDateTime;
     }
 
-    public LocalDate getDate() {
-        return dateTime.toLocalDate();
+    public final String getDescription() {
+        return this.description;
     }
 
-    public LocalTime getTime() {
-        return dateTime.toLocalTime();
+    public final void setDescription(final String aDesc) {
+        this.description = aDesc;
+    }
+
+    public final int getCalories() {
+        return this.calories;
+    }
+
+    public final void setCalories(final int aCalories) {
+        this.calories = aCalories;
+    }
+
+    public final LocalDate getDate() {
+        return this.dateTime.toLocalDate();
+    }
+
+    public final LocalTime getTime() {
+        return this.dateTime.toLocalTime();
     }
 }
