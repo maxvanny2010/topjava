@@ -1,7 +1,5 @@
 package ru.javawebinar.topjava.repository;
 
-import ru.javawebinar.topjava.model.MealTo;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -18,29 +16,31 @@ public interface IStore<T> {
      * Method to create.
      *
      * @param object a object
+     * @return T
      */
-    void create(T object);
+    T create(T object);
 
     /**
      * Method to update.
      *
      * @param object a object.
+     * @return T
      */
-    void update(T object);
+    T update(T object);
 
     /**
      * Method to delete.
      *
-     * @param object a object
+     * @param id a id of object
      */
-    void delete(T object);
+    void delete(int id);
 
     /**
      * Method to find all object from storage.
      *
      * @return objects by list
      */
-    List<MealTo> findAll();
+    List<T> findAll();
 
     /**
      * Method to find the object by id.

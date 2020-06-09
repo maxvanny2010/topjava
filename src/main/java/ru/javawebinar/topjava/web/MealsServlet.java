@@ -10,22 +10,22 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * EditServlet.
+ * UserServlet.
  *
  * @author Maxim Vanny
  * @version 5.0
  * @since 6/7/2020
  */
-public class EditServlet extends HttpServlet {
+public class MealsServlet extends HttpServlet {
     /**
      * field a logic.
      */
     private final Logic logic = LogicService.getInstance();
 
     @Override
-    public final void doPost(final HttpServletRequest req,
-                             final HttpServletResponse resp)
+    protected final void doGet(final HttpServletRequest req,
+                               final HttpServletResponse resp)
             throws ServletException, IOException {
-        this.logic.runAction("edit", req, resp);
+        this.logic.runAction("meals", req, resp);
     }
 }

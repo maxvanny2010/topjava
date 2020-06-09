@@ -11,13 +11,17 @@
 <html lang="ru">
 <head>
     <jsp:include page="fragments/link.jsp"/>
-    <title>INDEX</title>
+    <title>MEALS</title>
 </head>
 <body>
 <div class="container">
     <div class="text-center" style="font-weight: bold">Таблица приемов пищи(лимит 1500)</div>
     <br>
-    <div class="row"><a href="<c:url value="/add"/>">Добавить</a></div>
+    <div class="row" style="display: flex; margin: auto; justify-content: space-between; align-items: baseline;
+    flex-direction:row; width: 900px;">
+        <div><a href="index.html">Home</a></div>
+        <div><a href="<c:url value="/meals/add"/>">Добавить</a></div>
+    </div>
     <div class="row">
         <table class="table table-condensed">
             <thead class="p-1 text-center">
@@ -26,7 +30,8 @@
                 <c:forEach var="hat" items="${hats}">
                     <jsp:useBean id="hat" type="java.lang.String"/>
                     <th>
-                        <c:if test="${hat eq 'редактор'}">
+                        <c:set var="value" scope="request" value="${hat}"/>
+                        <c:if test="${value eq 'редактор'}">
                             <div><i class="fas fa-cloud" style="color:dodgerblue;"></i></div>
                         </c:if>
                         <c:if test="${hat eq 'удалить'}">
@@ -61,7 +66,7 @@
                     <c:out value="${meal.calories}"/>
                 </td>
                 <td>
-                    <form action="<c:url value="/controller"/>" method="POST" title="редактировать">
+                    <form action="<c:url value="/meals/edit"/>" method="POST" title="редактировать">
                         <input name="action" type="hidden" value="edit"/>
                         <input name="id" id="ed" type="hidden" value="${meal.id}"/>
                         <input class="btn btn-info btn-sm"

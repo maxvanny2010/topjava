@@ -7,8 +7,9 @@ import ru.javawebinar.topjava.action.ActionCreate;
 import ru.javawebinar.topjava.action.ActionDelete;
 import ru.javawebinar.topjava.action.ActionEdit;
 import ru.javawebinar.topjava.action.ActionException;
-import ru.javawebinar.topjava.action.ActionIndex;
+import ru.javawebinar.topjava.action.ActionMeals;
 import ru.javawebinar.topjava.action.ActionUpdate;
+import ru.javawebinar.topjava.action.ActionUsers;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -38,7 +39,8 @@ public final class LogicService implements Logic {
      * Constructor.
      */
     public LogicService() {
-        this.map.put("index", new ActionIndex());
+        this.map.put("meals", new ActionMeals());
+        this.map.put("users", new ActionUsers());
         this.map.put("add", new ActionAdd());
         this.map.put("create", new ActionCreate());
         this.map.put("edit", new ActionEdit());
@@ -46,7 +48,7 @@ public final class LogicService implements Logic {
         this.map.put("delete", new ActionDelete());
         this.map.put("exception", new ActionException());
         this.map.put("404", new Action404());
-        this.map.put(null, new ActionIndex());
+        this.map.put(null, new ActionMeals());
     }
 
     /**

@@ -4,9 +4,6 @@ import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.IStore;
 import ru.javawebinar.topjava.repository.MemStore;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Optional;
-
 /**
  * ActionAbd.
  *
@@ -35,20 +32,4 @@ public abstract class ActionAbs implements Action {
         return this.store;
     }
 
-    /**
-     * Method to get user and to set it to a request.
-     *
-     * @param id  a id
-     * @param req a request if id correct
-     */
-    protected final void setMealInRequest(final String id,
-                                          final HttpServletRequest req) {
-        if (id != null) {
-            final int parseInt = Integer.parseInt(id);
-            final Optional<Meal> meal = getStore().findById(parseInt);
-            meal.ifPresent(value -> req.setAttribute("meal", value));
-        } else {
-            throw new RuntimeException("missing id");
-        }
-    }
 }

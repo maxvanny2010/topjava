@@ -10,7 +10,7 @@
 <div class="row">
     <div class="col-md-12">
         <div class="float-md-right">
-            <a class="link" href="<c:url value="/index"/>">Назад к списку </a>
+            <a class="link" href="<c:url value="/meals"/>">Назад к списку </a>
         </div>
     </div>
 </div>

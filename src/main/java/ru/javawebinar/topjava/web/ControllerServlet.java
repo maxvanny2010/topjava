@@ -22,14 +22,7 @@ public class ControllerServlet extends HttpServlet {
      */
     private final Logic logic = LogicService.getInstance();
 
-    /**
-     * Method post.
-     *
-     * @param req  a request
-     * @param resp a response
-     * @throws ServletException servlet exception
-     * @throws IOException      oi exception
-     */
+    @Override
     protected final void doPost(final HttpServletRequest req,
                                 final HttpServletResponse resp)
             throws ServletException, IOException {

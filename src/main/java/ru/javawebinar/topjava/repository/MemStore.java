@@ -1,10 +1,8 @@
 package ru.javawebinar.topjava.repository;
 
 import ru.javawebinar.topjava.model.Meal;
-import ru.javawebinar.topjava.model.MealTo;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,8 +10,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
-
-import static ru.javawebinar.topjava.util.MealsUtil.filteredByStreams;
 
 /**
  * MemStore.
@@ -36,6 +32,7 @@ public final class MemStore implements IStore<Meal> {
      * Constructor.
      */
     private MemStore() {
+        this.storage = new ConcurrentHashMap<>();
         final Meal one = new Meal(
                 LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0),
                 "Завтрак", 500);
@@ -54,14 +51,12 @@ public final class MemStore implements IStore<Meal> {
         final Meal six = new Meal(
                 LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0),
                 "Ужин", 410);
-        this.storage = new ConcurrentHashMap<Integer, Meal>() {{
-            put(one.getId(), one);
-            put(two.getId(), two);
-            put(three.getId(), three);
-            put(four.getId(), four);
-            put(five.getId(), five);
-            put(six.getId(), six);
-        }};
+        this.create(one);
+        this.create(two);
+        this.create(three);
+        this.create(four);
+        this.create(five);
+        this.create(six);
     }
 
     /**
@@ -79,29 +74,25 @@ public final class MemStore implements IStore<Meal> {
     }
 
     @Override
-    public final void create(final Meal meal) {
+    public final Meal create(final Meal meal) {
         Objects.requireNonNull(meal, "must not be null");
-        this.storage.putIfAbsent(meal.getId(), meal);
+        return this.storage.putIfAbsent(meal.getId(), meal);
     }
 
     @Override
-    public final void update(final Meal meal) {
+    public final Meal update(final Meal meal) {
         Objects.requireNonNull(meal, "must not be null");
-        this.storage.computeIfPresent(meal.getId(), (k, v) -> v = meal);
+        return this.storage.computeIfPresent(meal.getId(), (k, v) -> v = meal);
     }
 
     @Override
-    public final void delete(final Meal meal) {
-        Objects.requireNonNull(meal, "must not be null");
-        this.storage.remove(meal.getId());
+    public final void delete(final int id) {
+        this.storage.remove(id);
     }
 
     @Override
-    public final List<MealTo> findAll() {
-        final ArrayList<Meal> meals = new ArrayList<>(this.storage.values());
-        return filteredByStreams(meals,
-                LocalTime.of(0, 0), LocalTime.of(23, 59),
-                1500);
+    public final List<Meal> findAll() {
+        return new ArrayList<>(this.storage.values());
     }
 
     @Override

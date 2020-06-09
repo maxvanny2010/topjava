@@ -25,13 +25,13 @@ public class ActionDelete extends ActionAbs {
         final int idx = Integer.parseInt(id);
         final Optional<Meal> meal = this.getStore().findById(idx);
         if (!meal.isPresent()) {
-            resp.sendRedirect("/topjava/404");
+            resp.sendRedirect("/404");
             return;
         }
-        this.getStore().delete(meal.get());
+        this.getStore().delete(meal.get().getId());
         if (this.getStore().getSize() == 0) {
             setCounter(0);
         }
-        resp.sendRedirect("/topjava/index");
+        resp.sendRedirect("/meals");
     }
 }

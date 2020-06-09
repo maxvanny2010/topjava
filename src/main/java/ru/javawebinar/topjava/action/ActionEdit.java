@@ -1,9 +1,12 @@
 package ru.javawebinar.topjava.action;
 
+import ru.javawebinar.topjava.model.Meal;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Optional;
 
 /**
  * ActionEdit.
@@ -19,12 +22,14 @@ public class ActionEdit extends ActionAbs {
             throws ServletException, IOException {
         try {
             final String id = req.getParameter("id");
-            this.setMealInRequest(id, req);
+            final int parseInt = Integer.parseInt(id);
+            final Optional<Meal> meal = getStore().findById(parseInt);
+            meal.ifPresent(value -> req.setAttribute("meal", value));
         } catch (RuntimeException e) {
-            resp.sendRedirect("/topjava/404");
+            resp.sendRedirect("/404");
             return;
         }
-        final String path = "WEB-INF/jsp/edit.jsp";
+        final String path = "/WEB-INF/jsp/edit.jsp";
         req.getRequestDispatcher(path).forward(req, resp);
     }
 }

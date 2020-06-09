@@ -1,6 +1,5 @@
 package ru.javawebinar.topjava.web;
 
-import org.slf4j.Logger;
 import ru.javawebinar.topjava.service.Logic;
 import ru.javawebinar.topjava.service.LogicService;
 
@@ -11,21 +10,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static org.slf4j.LoggerFactory.getLogger;
-
 /**
  * UserServlet.
  *
  * @author Maxim Vanny
  * @version 5.0
- * @since 6/7/2020
+ * @since 6/9/2020
  */
-public class IndexServlet extends HttpServlet {
-    /**
-     * field a logger.
-     */
-    @SuppressWarnings("unused")
-    private static final Logger LOG = getLogger(IndexServlet.class);
+public class UserServlet extends HttpServlet {
     /**
      * field a logic.
      */
@@ -41,6 +33,6 @@ public class IndexServlet extends HttpServlet {
     protected final void doGet(final HttpServletRequest req,
                                final HttpServletResponse resp)
             throws ServletException, IOException {
-        this.logic.runAction("index", req, resp);
+        this.logic.runAction("users", req, resp);
     }
 }
