@@ -3,33 +3,29 @@ package ru.javawebinar.topjava.model;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.StringJoiner;
 
-public class Meal {
-    private Integer id;
-
-    private final LocalDateTime dateTime;
-
-    private final String description;
-
-    private final int calories;
+/**
+ * Meal.
+ *
+ * @author Maxim Vanny
+ * @version 5.0
+ * @since 6/14/2020
+ */
+public class Meal extends AbstractBaseEntity {
+    private LocalDateTime dateTime;
+    private String description;
+    private int calories;
 
     public Meal(LocalDateTime dateTime, String description, int calories) {
         this(null, dateTime, description, calories);
     }
 
     public Meal(Integer id, LocalDateTime dateTime, String description, int calories) {
-        this.id = id;
+        super(id);
         this.dateTime = dateTime;
         this.description = description;
         this.calories = calories;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public LocalDateTime getDateTime() {
@@ -40,8 +36,16 @@ public class Meal {
         return description;
     }
 
+    public void setDescription(final String aDescription) {
+        this.description = aDescription;
+    }
+
     public int getCalories() {
         return calories;
+    }
+
+    public void setCalories(final Integer aCalories) {
+        this.calories = aCalories;
     }
 
     public LocalDate getDate() {
@@ -52,17 +56,15 @@ public class Meal {
         return dateTime.toLocalTime();
     }
 
-    public boolean isNew() {
-        return id == null;
-    }
-
     @Override
-    public String toString() {
-        return "Meal{" +
-                "id=" + id +
-                ", dateTime=" + dateTime +
-                ", description='" + description + '\'' +
-                ", calories=" + calories +
-                '}';
+    public final String toString() {
+        return new StringJoiner(", ",
+                Meal.class.getSimpleName() + "[", "]")
+                .add("\n")
+                .add("id=" + this.id)
+                .add("dateTime=" + this.dateTime)
+                .add("description='" + this.description + "'")
+                .add("calories=" + this.calories)
+                .toString();
     }
 }
