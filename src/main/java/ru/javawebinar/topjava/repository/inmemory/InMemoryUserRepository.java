@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.IntStream;
 
 @Repository
 public class InMemoryUserRepository implements UserRepository {
@@ -45,9 +46,9 @@ public class InMemoryUserRepository implements UserRepository {
 
     @Override
     public final List<User> getAll() {
-        LOG.info("getAll");
         final List<User> list = new ArrayList<>(this.repository.values());
         list.sort(this::compareByName);
+        LOG.info("getAll {}", list);
         return list;
     }
 
@@ -62,7 +63,18 @@ public class InMemoryUserRepository implements UserRepository {
     }
 
     private int compareByName(final User o1, final User o2) {
-        return o1.getName().compareTo(o2.getName());
+        final String left = o1.getName();
+        final String right = o2.getName();
+        final int compare = left.compareTo(right);
+        if (compare == 0) {
+            int min = Math.min(left.length(), right.length());
+            return IntStream.range(0, min)
+                    .map(z -> Character.compare(left.charAt(z), right.charAt(z)))
+                    .filter(z -> z != 0)
+                    .findFirst()
+                    .orElse(Integer.compare(left.length(), right.length()));
+        }
+        return compare;
     }
 
 }

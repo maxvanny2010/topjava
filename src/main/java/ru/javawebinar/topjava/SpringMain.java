@@ -32,6 +32,16 @@ public final class SpringMain {
             AdminRestController admin = appCtx.getBean(AdminRestController.class);
             final MealRestController mealController = appCtx.getBean(MealRestController.class);
             admin.create(new User(null, "userName", "email@mail.ru", "password", Role.ADMIN));
+            admin.create(new User(null, "вввв", "вввв2@mail.ru", "password", Role.USER));
+            admin.create(new User(null, "ааа", "ааа1@mail.ru", "password", Role.USER));
+            admin.create(new User(null, "бб", "бб1@mail.ru", "password", Role.USER));
+            admin.create(new User(null, "ааа", "ааа2@mail.ru", "password", Role.USER));
+            admin.create(new User(null, "вввв", "вввв1@mail.ru", "password", Role.USER));
+            admin.create(new User(null, "ббб", "ббб2@mail.ru", "password", Role.USER));
+            System.out.println("********************************");
+            System.out.println("users");
+            admin.getAll();
+            System.out.println("********************************");
             final Meal meal = mealController.create(
                     new Meal(LocalDateTime.of(
                             2020, Month.JANUARY, 1, 11, 0), "Завтрак", 800));

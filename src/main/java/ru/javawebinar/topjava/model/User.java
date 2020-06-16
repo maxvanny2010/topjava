@@ -87,6 +87,7 @@ public class User extends AbstractNamedEntity {
     public final String toString() {
         return new StringJoiner(", ",
                 User.class.getSimpleName() + "[", "]")
+                .add("\n")
                 .add("id=" + this.id)
                 .add("name='" + this.name + "'")
                 .add("email='" + this.email + "'")
