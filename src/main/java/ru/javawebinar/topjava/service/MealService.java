@@ -5,6 +5,7 @@ import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 
 import java.util.Collection;
+import java.util.List;
 
 import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFoundWithId;
 
@@ -36,7 +37,7 @@ public class MealService {
         return checkNotFoundWithId(this.repository.get(id, userId), id);
     }
 
-    public final Collection<Meal> getAll(final int userId) {
+    public final List<Meal> getAll(final int userId) {
         return this.repository.getAll(userId);
     }
 
