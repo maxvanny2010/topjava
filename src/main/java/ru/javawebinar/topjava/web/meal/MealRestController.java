@@ -40,8 +40,8 @@ public class MealRestController {
         this.service.delete(id, authUserId());
     }
 
-    public final Meal update(final Meal meal) {
-        return this.service.update(meal, authUserId());
+    public final Meal update(final Meal meal, int id) {
+        return this.service.update(meal, authUserId(), id);
     }
 
     public final List<MealTo> getAll() {

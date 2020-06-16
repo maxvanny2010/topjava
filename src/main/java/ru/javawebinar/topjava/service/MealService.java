@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 
-import java.util.Collection;
 import java.util.List;
 
 import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFoundWithId;
@@ -41,8 +40,8 @@ public class MealService {
         return this.repository.getAll(userId);
     }
 
-    public final Meal update(final Meal meal, final int userId) {
+    public final Meal update(final Meal meal, final int userId, final int id) {
         return checkNotFoundWithId(
-                this.repository.save(meal, userId), meal.getId());
+                this.repository.save(meal, userId), id);
     }
 }

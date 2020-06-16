@@ -48,7 +48,7 @@ public final class SpringMain {
             mealController.get(meal.getId());
             meal.setDescription("Обед");
             meal.setCalories(600);
-            mealController.update(meal);
+            mealController.update(meal, meal.getId());
             mealController.getAll();
             System.out.println("days");
             System.out.println("********************************");
