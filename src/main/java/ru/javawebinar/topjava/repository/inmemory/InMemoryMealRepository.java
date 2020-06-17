@@ -39,10 +39,10 @@ public class InMemoryMealRepository implements MealRepository {
     @Override
     public final Meal save(final Meal meal, final int userId) {
         Map<Integer, Meal> meals = this.repository.get(userId);
-        final boolean isMeals = Objects.isNull(meals);
+        final boolean isMeals = Objects.nonNull(meals);
         if (meal.isNew()) {
             meal.setId(this.counter.incrementAndGet());
-            if (isMeals) {
+            if (!isMeals) {
                 meals = new HashMap<>();
                 meals.put(meal.getId(), meal);
                 this.repository.put(userId, meals);
@@ -54,7 +54,7 @@ public class InMemoryMealRepository implements MealRepository {
         }
         // handle case: update, but not present in storage
         LOG.info("meal update: {}", meal);
-        if (isMeals) {
+        if (!isMeals) {
             return null;
         }
         return meals.computeIfPresent(meal.getId(), (a, b) -> meal);
