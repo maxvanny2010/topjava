@@ -44,8 +44,12 @@ public class MealRestController {
         return this.service.update(meal, authUserId(), id);
     }
 
+    public final List<MealTo> getAll(int userId) {
+        return MealsUtil.getTos(this.service.getAll(userId),
+                MealsUtil.DEFAULT_CALORIES_PER_DAY);
+    }
     public final List<MealTo> getAll() {
-        return MealsUtil.getTos(this.service.getAll(authUserId()),
+        return MealsUtil.getTos(this.service.getAll(),
                 MealsUtil.DEFAULT_CALORIES_PER_DAY);
     }
 

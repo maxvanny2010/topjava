@@ -8,6 +8,8 @@ import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.MealsUtil;
 import ru.javawebinar.topjava.web.SecurityUtil;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -36,7 +38,7 @@ public class InMemoryMealRepository implements MealRepository {
 
     @Override
     public final Meal save(final Meal meal, final int userId) {
-        Map<Integer, Meal> meals = this.repository.getOrDefault(userId, null);
+        Map<Integer, Meal> meals = this.repository.get(userId);
         final boolean isMeals = Objects.isNull(meals);
         if (meal.isNew()) {
             meal.setId(this.counter.incrementAndGet());
@@ -74,19 +76,38 @@ public class InMemoryMealRepository implements MealRepository {
 
     @Override
     public final Meal get(final int id, final int userId) {
-        final Meal meal = this.repository.get(userId).get(id);
-        if (Objects.isNull(meal)) {
-            return null;
+        final Map<Integer, Meal> meals = this.repository.get(userId);
+        if (Objects.nonNull(meals)) {
+            final Meal meal = meals.get(id);
+            LOG.info("meal get: {}", meal);
+            return meal;
         }
-        LOG.info("meal get: {}", meal);
-        return meal;
+        return null;
     }
 
     @Override
     public final List<Meal> getAll(final int userId) {
-        return this.repository.get(userId)
+        final Map<Integer, Meal> meals = this.repository.get(userId);
+        if (Objects.isNull(meals)) {
+            return new ArrayList<>();
+        }
+        return meals
                 .values()
                 .stream()
+                .sorted(Comparator.comparing(Meal::getDateTime).reversed())
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public final List<Meal> getAll() {
+        if (this.repository.size() == 0) {
+            return new ArrayList<>();
+        }
+        return this.repository
+                .values()
+                .stream()
+                .map(Map::values)
+                .flatMap(Collection::stream)
                 .sorted(Comparator.comparing(Meal::getDateTime).reversed())
                 .collect(Collectors.toList());
     }

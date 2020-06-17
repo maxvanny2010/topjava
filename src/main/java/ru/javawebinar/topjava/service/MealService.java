@@ -40,6 +40,10 @@ public class MealService {
         return this.repository.getAll(userId);
     }
 
+    public final List<Meal> getAll() {
+        return this.repository.getAll();
+    }
+
     public final Meal update(final Meal meal, final int userId, final int id) {
         return checkNotFoundWithId(
                 this.repository.save(meal, userId), id);
