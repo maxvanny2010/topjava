@@ -21,7 +21,7 @@ public class UserTestData {
 
     public static User getNew() {
         return new User(null, "New", "new@gmail.com", "newPass",
-                1555, false, new Date(), Collections.singleton(Role.USER), new ArrayList<>());
+                1555, false, new Date(), Collections.singleton(Role.USER));
     }
 
     public static User getUpdated() {
