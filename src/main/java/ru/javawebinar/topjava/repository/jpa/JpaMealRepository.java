@@ -19,7 +19,7 @@ public class JpaMealRepository implements MealRepository {
     private EntityManager em;
 
     @Override
-    @Transactional//если убрать сыпятся эксепшены read only
+    @Transactional
     public Meal save(Meal meal, int userId) {
         final User ref = this.em.getReference(User.class, userId);
         if (meal.isNew()) {
@@ -27,39 +27,34 @@ public class JpaMealRepository implements MealRepository {
             this.em.persist(meal);
             return meal;
         }
-        final Meal isGet = this.get(meal.getId(), userId);
-        if (Objects.nonNull(isGet)) {
+        final Meal existMeal = this.get(meal.getId(), userId);
+        if (Objects.nonNull(existMeal)) {
             return this.em.merge(meal);
         }
         return null;
     }
 
     @Override
-    @Transactional// если убрать сыпятся эксепшены read only
+    @Transactional
     public boolean delete(int id, int userId) {
-        return this.em.createNamedQuery(User.DELETE)
+        return this.em.createNamedQuery(Meal.DELETE)
                 .setParameter("id", id)
+                .setParameter("userId", userId)
                 .executeUpdate() != 0;
-        //не пропускает валидатор
-        //если ==0 то проходит. при !=0 нет. но если строка удалятся и должно быть !=0
-        //тк произошло обновление строки
     }
 
     @Override
     public Meal get(int id, int userId) {
         Meal meal = em.find(Meal.class, id);
-        if (Objects.nonNull(meal) && meal.getUser().getId() == userId) {
-            return meal;
-        } else {
-            return null;
-        }
+        final boolean query = Objects.nonNull(meal) && meal.getUser().getId() == userId;
+        return query ? meal : null;
     }
 
     @Override
     public List<Meal> getAll(int userId) {
         final User ref = this.em.getReference(User.class, userId);
         return this.em.createNamedQuery(Meal.ALL, Meal.class)
-                .setParameter("ref", ref)
+                .setParameter("userId", ref.getId())
                 .getResultList();
     }
 
@@ -69,7 +64,7 @@ public class JpaMealRepository implements MealRepository {
         return this.em.createNamedQuery(Meal.PERIOD, Meal.class)
                 .setParameter("startDateTime", startDateTime)
                 .setParameter("endDateTime", endDateTime)
-                .setParameter("ref", ref)
+                .setParameter("userId", ref.getId())
                 .getResultList();
 
     }

@@ -4,6 +4,7 @@ import ru.javawebinar.topjava.model.Meal;
 
 import java.time.Month;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static java.time.LocalDateTime.of;
@@ -37,8 +38,13 @@ public class MealTestData {
         return new Meal(MEAL1_ID, MEAL1.getDateTime(), "Обновленный завтрак", 200, USER);
     }
 
-    public static void assertMatch(Meal actual, Meal expected) {
+   /* public static void assertMatch(Meal actual, Meal expected) {
         assertThat(actual).isEqualToComparingFieldByField(expected);
+    }*/
+    public static void assertMatch(Meal actual, Meal expected) {
+        assertThat(Collections.singleton(actual))
+                .usingElementComparatorIgnoringFields("user")
+                .isEqualTo(Collections.singleton(expected));
     }
 
     public static void assertMatch(Iterable<Meal> actual, Meal... expected) {
@@ -46,6 +52,8 @@ public class MealTestData {
     }
 
     public static void assertMatch(Iterable<Meal> actual, Iterable<Meal> expected) {
-        assertThat(actual).usingFieldByFieldElementComparator().isEqualTo(expected);
+        assertThat(actual)
+                .usingElementComparatorIgnoringFields("user")
+                .isEqualTo(expected);
     }
 }
