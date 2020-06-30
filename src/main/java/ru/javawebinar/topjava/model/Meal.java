@@ -1,9 +1,5 @@
 package ru.javawebinar.topjava.model;
 
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -36,16 +32,18 @@ public class Meal extends AbstractBaseEntity {
     public static final String ALL = "Meal.all";
     public static final String PERIOD = "Meal.period";
     @NotNull
-    @Column(name = "date_time")
+    @Column(name = "date_time", nullable = false)
     private LocalDateTime dateTime;
     @NotBlank
     @Size(min = 5, max = 1000)
-    @Column(name = "description")
+    @Column(name = "description", nullable = false)
     private String description;
-    @NotNull
+    @NotBlank
+    @Column(name = "calories", nullable = false)
+    @Size(min = 1, max = 5000)
     private int calories;
     @NotNull
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id",
             foreignKey = @ForeignKey(name = "user_id_fk"),
             nullable = false)
