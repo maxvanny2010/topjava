@@ -3,7 +3,6 @@ package ru.javawebinar.topjava.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -18,7 +17,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @NamedQueries({
-        @NamedQuery(name = Meal.DELETE, query = "DELETE FROM Meal m WHERE m.id= :id AND m.user.id= :userId"),
+        @NamedQuery(name = Meal.DELETE, query = "DELETE FROM Meal m WHERE m.id= :id"),
         @NamedQuery(name = Meal.GET, query = "SELECT m FROM Meal m WHERE m.id= :id AND m.user.id= :userId"),
         @NamedQuery(name = Meal.ALL, query = "SELECT m FROM Meal m WHERE m.user= :ref ORDER BY m.dateTime DESC"),
         @NamedQuery(name = Meal.PERIOD, query = "SELECT m FROM Meal m WHERE m.user= :ref  AND m.dateTime >= :startDateTime AND m.dateTime < :endDateTime ORDER BY m.dateTime DESC"),
@@ -34,7 +33,7 @@ public class Meal extends AbstractBaseEntity {
     @NotNull
     @Column(name = "date_time", nullable = false)
     private LocalDateTime dateTime;
-    @NotBlank
+    @NotNull
     @Size(min = 5, max = 1000)
     @Column(name = "description", nullable = false)
     private String description;
@@ -43,34 +42,30 @@ public class Meal extends AbstractBaseEntity {
     @Size(min = 1, max = 5000)
     private int calories;
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id",
-            foreignKey = @ForeignKey(name = "user_id_fk"),
-            nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     public Meal() {
     }
 
     public Meal(LocalDateTime dateTime, String description, int calories) {
-        this(null, dateTime, description, calories);
-        this.user = null;
+        this(null, dateTime, description, calories, null);
     }
 
     public Meal(LocalDateTime dateTime, String description, int calories, User user) {
-        this(null, dateTime, description, calories);
-        this.user = user;
+        this(null, dateTime, description, calories, user);
     }
 
     public Meal(Integer id, LocalDateTime dateTime, String description, int calories) {
+        this(id, dateTime, description, calories, null);
+    }
+
+    public Meal(Integer id, LocalDateTime dateTime, String description, int calories, User user) {
         super(id);
         this.dateTime = dateTime;
         this.description = description;
         this.calories = calories;
-    }
-
-    public Meal(int id, LocalDateTime dateTime, String description, int calories, User user) {
-        this(id, dateTime, description, calories);
         this.user = user;
     }
 
@@ -121,6 +116,7 @@ public class Meal extends AbstractBaseEntity {
                 ", dateTime=" + dateTime +
                 ", description='" + description + '\'' +
                 ", calories=" + calories +
+                ", user=" + this.user +
                 '}';
     }
 }

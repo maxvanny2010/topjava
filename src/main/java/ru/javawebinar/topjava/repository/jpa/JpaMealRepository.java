@@ -1,6 +1,5 @@
 package ru.javawebinar.topjava.repository.jpa;
 
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjava.model.Meal;
@@ -11,8 +10,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
-@Component("JpaMealRepository")
 @Repository
 @Transactional(readOnly = true)
 public class JpaMealRepository implements MealRepository {
@@ -20,37 +19,40 @@ public class JpaMealRepository implements MealRepository {
     private EntityManager em;
 
     @Override
+    @Transactional//если убрать сыпятся эксепшены read only
     public Meal save(Meal meal, int userId) {
         final User ref = this.em.getReference(User.class, userId);
         if (meal.isNew()) {
             meal.setUser(ref);
             this.em.persist(meal);
             return meal;
-        } else {
-            if (meal.getUser().getId().equals(ref.getId())) {
-                return this.em.merge(meal);
-            } else {
-                return null;
-            }
         }
+        final Meal isGet = this.get(meal.getId(), userId);
+        if (Objects.nonNull(isGet)) {
+            return this.em.merge(meal);
+        }
+        return null;
     }
 
     @Override
+    @Transactional// если убрать сыпятся эксепшены read only
     public boolean delete(int id, int userId) {
-        final User user = this.em.getReference(User.class, userId);
         return this.em.createNamedQuery(User.DELETE)
                 .setParameter("id", id)
-                .setParameter("userId", user.getId())
                 .executeUpdate() != 0;
+        //не пропускает валидатор
+        //если ==0 то проходит. при !=0 нет. но если строка удалятся и должно быть !=0
+        //тк произошло обновление строки
     }
 
     @Override
     public Meal get(int id, int userId) {
-        final User user = this.em.getReference(User.class, userId);
-        return this.em.createNamedQuery(Meal.GET, Meal.class)
-                .setParameter("id", id)
-                .setParameter("userId", user.getId())
-                .getSingleResult();
+        Meal meal = em.find(Meal.class, id);
+        if (Objects.nonNull(meal) && meal.getUser().getId() == userId) {
+            return meal;
+        } else {
+            return null;
+        }
     }
 
     @Override
