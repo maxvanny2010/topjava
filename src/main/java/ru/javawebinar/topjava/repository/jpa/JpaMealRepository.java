@@ -14,25 +14,28 @@ import java.util.List;
 
 @Component("JpaMealRepository")
 @Repository
-@Transactional()
+@Transactional(readOnly = true)
 public class JpaMealRepository implements MealRepository {
     @PersistenceContext
     private EntityManager em;
 
     @Override
     public Meal save(Meal meal, int userId) {
+        final User ref = this.em.getReference(User.class, userId);
         if (meal.isNew()) {
-            final User ref = this.em.getReference(User.class, userId);
             meal.setUser(ref);
             this.em.persist(meal);
             return meal;
         } else {
-            return this.em.merge(meal);
+            if (meal.getUser().getId().equals(ref.getId())) {
+                return this.em.merge(meal);
+            } else {
+                return null;
+            }
         }
     }
 
     @Override
-    @Transactional
     public boolean delete(int id, int userId) {
         final User user = this.em.getReference(User.class, userId);
         return this.em.createNamedQuery(User.DELETE)
