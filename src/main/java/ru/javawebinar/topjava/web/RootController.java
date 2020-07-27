@@ -1,6 +1,5 @@
 package ru.javawebinar.topjava.web;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,13 +12,20 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class RootController {
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+    private final MealService mealService;
 
-    @Autowired
-    private MealService mealService;
+    public RootController(final UserService userService, final MealService mealService) {
+        this.userService = userService;
+        this.mealService = mealService;
+    }
 
-    @GetMapping("/")
+    // обычный вход при старте спринга.
+    // ПРИ-> @GetMapping("/")
+    // при слеше("/") без index(любое слово), не могу ни зайти со старта, ни потом перейти на root
+    // пишет нет маппинга на GET "/topjava/"
+    // картинки настроек и вид ошибки приложил в слаке. название GetMapping
+    @GetMapping("/index")
     public String root() {
         return "index";
     }
@@ -40,7 +46,8 @@ public class RootController {
     @GetMapping("/meals")
     public String getMeals(Model model) {
         model.addAttribute("meals",
-                MealsUtil.getTos(mealService.getAll(SecurityUtil.authUserId()), SecurityUtil.authUserCaloriesPerDay()));
+                MealsUtil.getTos(mealService.getAll(SecurityUtil.authUserId()),
+                        SecurityUtil.authUserCaloriesPerDay()));
         return "meals";
     }
 }
