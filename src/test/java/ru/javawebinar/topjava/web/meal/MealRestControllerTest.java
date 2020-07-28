@@ -12,12 +12,15 @@ import ru.javawebinar.topjava.util.exception.NotFoundException;
 import ru.javawebinar.topjava.web.AbstractControllerTest;
 import ru.javawebinar.topjava.web.json.JsonUtil;
 
+import java.time.LocalTime;
+
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.javawebinar.topjava.MealTestData.MEAL1;
 import static ru.javawebinar.topjava.MealTestData.MEAL1_ID;
+import static ru.javawebinar.topjava.MealTestData.MEAL7;
 import static ru.javawebinar.topjava.MealTestData.MEALS;
 import static ru.javawebinar.topjava.MealTestData.MEAL_MATCHER;
 import static ru.javawebinar.topjava.TestUtil.readFromJson;
@@ -89,6 +92,14 @@ class MealRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    void whenGetBetweenIsFalls() {
+    void whenGetBetweenIsFalls() throws Exception {
+        final String query = "filter?startDate=" + MEAL1.getDateTime().toLocalDate()
+                + "&endDate=" + MEAL7.getDateTime().toLocalDate()
+                + "&startTime=" + LocalTime.MIN
+                + "&endTime=" + LocalTime.MAX;
+        perform(MockMvcRequestBuilders.get(REST_MEALS + query))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(MEAL_MATCHER.contentJson(MEALS));
     }
 }

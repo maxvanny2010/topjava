@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -71,12 +72,12 @@ public class MealRestController extends AbstractMealController {
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
 
-    @GetMapping("/filter?{startDate}&{endDate}&{startTime}&{endTime}")
+    @GetMapping("/filter")
     public final ResponseEntity<List<MealTo>> getAllBetween(
-            @PathVariable @DateTimeFormat(iso = ISO.DATE) final LocalDate startDate,
-            @PathVariable @DateTimeFormat(iso = ISO.DATE) final LocalDate endDate,
-            @PathVariable @DateTimeFormat(iso = ISO.TIME) final LocalTime startTime,
-            @PathVariable @DateTimeFormat(iso = ISO.TIME) final LocalTime endTime) {
+            @RequestParam("startDate") @DateTimeFormat(iso = ISO.DATE) final LocalDate startDate,
+            @RequestParam("endDate") @DateTimeFormat(iso = ISO.DATE) final LocalDate endDate,
+            @RequestParam("startTime") @DateTimeFormat(iso = ISO.TIME) final LocalTime startTime,
+            @RequestParam("endTime") @DateTimeFormat(iso = ISO.TIME) final LocalTime endTime) {
         final List<MealTo> between = super.getBetween(startDate, startTime, endDate, endTime);
         return between.isEmpty()
                 ? new ResponseEntity<>(Collections.emptyList(), HttpStatus.NOT_FOUND)

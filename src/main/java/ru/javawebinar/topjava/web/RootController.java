@@ -20,12 +20,7 @@ public class RootController {
         this.mealService = mealService;
     }
 
-    // обычный вход при старте спринга.
-    // ПРИ-> @GetMapping("/")
-    // при слеше("/") без index(любое слово), не могу ни зайти со старта, ни потом перейти на root
-    // пишет нет маппинга на GET "/topjava/"
-    // картинки настроек и вид ошибки приложил в слаке. название GetMapping
-    @GetMapping("/index")
+    @GetMapping("/")
     public String root() {
         return "index";
     }
