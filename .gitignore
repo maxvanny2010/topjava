@@ -10,8 +10,6 @@ out
 *.log
 *.iml
 *.patch
-
-
 # BlueJ files
 *.ctxt
 
